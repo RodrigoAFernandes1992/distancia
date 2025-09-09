@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Monitor Ultrassônico ESP32 + Supabase</title>
+</head>
+<body>
+  <h1>Leitura do Sensor Ultrassônico</h1>
+  <p>📏 Distância: <span id="distancia">--</span> cm</p>
+
+  <script>
+    const url = "https://unmnfifouemowyrkdjdj.supabase.co";
+    const apikey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVubW5maWZvdWVtb3d5cmtkamRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc0MjI4MDcsImV4cCI6MjA3Mjk5ODgwN30.AZAm7yidblij9Wqm-wRbM8qUmFSq8YoWSrlHiJSKDu8";
+;
+
+    async function carregarDados() {
+      const res = await fetch(url, {
+        headers: {
+          apikey,
+          Authorization: "Bearer " + apikey
+        }
+      });
+      const dados = await res.json();
+      if (dados.length > 0) {
+        document.getElementById("distancia").innerText = dados[0].distancia.toFixed(2);
+      }
+    }
+    setInterval(carregarDados, 3000);
+  </script>
+</body>
+</html>
