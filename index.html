@@ -9,22 +9,35 @@
   <p>📏 Distância: <span id="distancia">--</span> cm</p>
 
   <script>
-    const url = "https://SEU_PROJETO.supabase.co/rest/v1/sensores?order=criado_em.desc&limit=1";
+    const url = "https://unmnfifouemowyrkdjdj.supabase.co/rest/v1/sensores?order=criado_em.desc&limit=1";
     const apikey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVubW5maWZvdWVtb3d5cmtkamRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc0MjI4MDcsImV4cCI6MjA3Mjk5ODgwN30.AZAm7yidblij9Wqm-wRbM8qUmFSq8YoWSrlHiJSKDu8";
-;
 
     async function carregarDados() {
-      const res = await fetch(url, {
-        headers: {
-          apikey,
-          Authorization: "Bearer " + apikey
+      try {
+        const res = await fetch(url, {
+          headers: {
+            'apikey': apikey,
+            'Authorization': 'Bearer ' + apikey
+          }
+        });
+        
+        if (!res.ok) {
+          throw new Error(`Erro HTTP: ${res.status}`);
         }
-      });
-      const dados = await res.json();
-      if (dados.length > 0) {
-        document.getElementById("distancia").innerText = dados[0].distancia.toFixed(2);
+        
+        const dados = await res.json();
+        console.log('Dados recebidos:', dados);
+        
+        if (dados.length > 0) {
+          document.getElementById("distancia").innerText = dados[0].distancia.toFixed(2);
+        }
+      } catch (error) {
+        console.error('Erro ao carregar dados:', error);
       }
     }
+    
+    // Carregar imediatamente e depois a cada 3 segundos
+    carregarDados();
     setInterval(carregarDados, 3000);
   </script>
 </body>
